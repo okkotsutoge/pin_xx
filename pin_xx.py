@@ -13,11 +13,12 @@ class PinterestImageSet():
     def __init__(self, headers=None):
         pass
 
-    def search(self, key, slide=0):
+    def search(self, key, slide=0, random=False):
         self.keyword={
             "q": key
         }
-        self.url='https://www.pinterest.com/search/pins?{}'.format(urllib.parse.urlencode(self.keyword))
+        key=urllib.parse.urlencode(self.keyword)
+        self.url= f"https://www.pinterest.com/search/pins?{key}" if not random else "https://www.pinterest.com/"
 
         page=ChromiumPage()
         page.get(self.url)
@@ -82,5 +83,6 @@ class PinterestImageSet():
 
 if __name__ == '__main__':
     pin = PinterestImageSet()
-    pin.search('Sousou no frieren')
-    pin.download(r'C://sousou/')
+    key="frieren"
+    pin.search(key,random=True)
+    pin.download('C://{}'.format(key))
