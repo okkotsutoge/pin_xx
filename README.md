@@ -8,12 +8,6 @@
 pip install lxml
 ```
 
-安装`requests`
-
-```bash
-pip install requests
-```
-
 安装`DrissionPage`
 
 ```bash
