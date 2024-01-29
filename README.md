@@ -42,7 +42,7 @@ pin.download(r'C://sousou/')
 
 `key` 指的是关键词，`slide` 为下拉到底部的次数，默认为0,  `random`是随机参数，问询是否访问首页的推荐图片，默认为`False`
 
-- `download(self, targetUrl='./')`
+- `downloadAll(self, targetUrl='./')`
 
 该方法用于下载图片集合到目的目录
 
