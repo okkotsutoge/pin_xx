@@ -1,22 +1,17 @@
-import os
 import re
 import urllib
-import random
-import requests
 from DrissionPage import ChromiumPage
 from lxml import etree
-import time
+from DownloadKit import DownloadKit
 
 
 class PinterestImageSet():
     # 初始化
-    def __init__(self, headers=None):
+    def __init__(self):
         pass
 
     def search(self, key, slide=0, random=False):
-        self.keyword={
-            "q": key
-        }
+        self.keyword={"q": key}
         key=urllib.parse.urlencode(self.keyword)
         self.url= f"https://www.pinterest.com/search/pins?{key}" if not random else "https://www.pinterest.com/"
 
@@ -25,9 +20,9 @@ class PinterestImageSet():
         page.wait.load_start()
 
         for single_slide in range(slide):
-            print(f'正在翻至第{slide}页，请不要关闭页面...')
+            page.wait.load_start()
+            print(f'正在翻至第{single_slide+1}页，请不要关闭页面...')
             page.scroll.to_bottom()
-            time.sleep(4)
 
         self.content=page.html
         html = etree.HTML(self.content, etree.HTMLParser())
@@ -53,36 +48,20 @@ class PinterestImageSet():
             pass
 
         images = added_lists+ thumb_imgs + img_gallery + img_set
+        self.images= list(set([img for img in images if "originals" in img]))
 
-        # 图片的集合
-        self.image_set=[]
-
-
-        for image in images:
-            if -1==image.find("originals"):
-                continue
-
-            try:
-                img = requests.get(image)
-                time.sleep(2)
-                self.image_set.append([img, image.split('/')[-1]])
-                print(image)
-            except Exception as e:
-                pass
-
-    def download(self, targetUrl='./'):
-        if not os.path.exists(targetUrl):
-            os.makedirs(targetUrl)
-
-        print('开始下载到本地...')
-        for img, suffix in self.image_set:
-            with open("{0}/{1}.{2}".format(targetUrl, int(random.random()*1e12), suffix.split('.')[-1]), mode="wb") as f:
-                f.write(img.content)
-                print('正在下载: {}'.format(f.name))
+    def downloadAll(self, targetUrl='./'):
+        print('开始下载......')
+        d = DownloadKit()
+        d.set.goal_path(targetUrl)
+        for img in self.images:
+            d.add(img)
+        d.wait()
+        print('下载完毕!')
 
 
 if __name__ == '__main__':
     pin = PinterestImageSet()
-    key="frieren"
-    pin.search(key, slide=10)
-    pin.download('C://{}'.format(key))
+    key="sky"
+    pin.search(key,random=True, slide=6)
+    pin.downloadAll('C://{}'.format(key))
