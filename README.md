@@ -36,11 +36,11 @@ pin.download(r'C://sousou/')
 
 **参数解析**
 
-- `search(self, key, slide=0)`
+- `search(self, key, slide=0, random=False)`
 
 该方法用于搜索图片生成结果
 
-`key` 指的是关键词，`slide` 为下拉到底部的次数，默认为0
+`key` 指的是关键词，`slide` 为下拉到底部的次数，默认为0,  `random`是随机参数，问询是否访问首页的推荐图片，默认为`False`
 
 - `download(self, targetUrl='./')`
 
