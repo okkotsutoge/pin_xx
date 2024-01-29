@@ -84,5 +84,5 @@ class PinterestImageSet():
 if __name__ == '__main__':
     pin = PinterestImageSet()
     key="frieren"
-    pin.search(key,random=True)
+    pin.search(key, slide=10)
     pin.download('C://{}'.format(key))
