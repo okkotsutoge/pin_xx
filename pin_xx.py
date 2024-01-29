@@ -1,3 +1,4 @@
+import os.path
 import re
 import urllib
 from DrissionPage import ChromiumPage
@@ -51,9 +52,11 @@ class PinterestImageSet():
         self.images= list(set([img for img in images if "originals" in img]))
 
     def downloadAll(self, targetUrl='./'):
+        os.makedirs(targetUrl) if not os.path.exists(targetUrl) else None
+
         print('开始下载......')
         d = DownloadKit()
-        d.set.goal_path(targetUrl)
+        d.set.goal_path(targetUrl+'/')
         for img in self.images:
             d.add(img)
         d.wait()
@@ -63,5 +66,5 @@ class PinterestImageSet():
 if __name__ == '__main__':
     pin = PinterestImageSet()
     key="sky"
-    pin.search(key,random=True, slide=6)
+    pin.search(key, slide=6)
     pin.downloadAll('C://{}'.format(key))
